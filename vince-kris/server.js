@@ -38,7 +38,7 @@ app.get('/new-article', (request, response) => {
 // REVIEW: Routes for making API calls to use CRUD Operations on our database
 app.get('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. This piece of code is getting and displaying information from the client.query method, so it counts as read.
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. This talks to the fetchAll() method, which also calls the loadAll() method in articles.js. This is a read, because the assumption is that there are articles in the database to be grabbed for rendering. 
   client.query('SELECT * FROM articles')
     .then(function(result) {
       response.send(result.rows);
@@ -51,7 +51,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. The SQL variable is updating, by using INSERT INTO.
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. This is an insertion into the database, which means we're creating a new record, which happens by invoking insertRecord() in article.js.
   let SQL = `
     INSERT INTO articles(title, author, author_url, category, published_on, body)
     VALUES ($1, $2, $3, $4, $5, $6);
@@ -78,7 +78,7 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. Because this is instatiating a new article among many, it counts as an update.
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. This invokes updateRecord() in article.js. Because this is instatiating a new article among many, it counts as an update.
 
   console.log(request.body.title);
   let SQL = `UPDATE articles 
@@ -112,7 +112,7 @@ app.put('/articles/:id', (request, response) => {
 
 app.delete('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. Because we are using DELETE it counts as a delete.
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. This interacts with deleteRecord() in articles.js. Because we are using the DELETE SQL command, it counts as destruction.
 
   let SQL = `DELETE FROM articles WHERE article_id=$1;`;
   let values = [request.params.id];
@@ -129,9 +129,9 @@ app.delete('/articles/:id', (request, response) => {
 
 app.delete('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code.
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. This interacts with the truncateTable() method in article.js and removes everything in the table, so it's the nuking kind of destroy as described by John yesterday.
 
-  let SQL = '';
+  let SQL = 'TRUNCATE TABLE articles';
   client.query(SQL)
     .then(() => {
       response.send('Delete complete')
@@ -143,7 +143,7 @@ app.delete('/articles', (request, response) => {
 });
 
 // COMMENT: What is this function invocation doing?
-// PUT YOUR RESPONSE HERE
+//loadDB() creates the table if it doesn't already exist, and is helped by the loadArticles() method in articles.js.
 loadDB();
 
 app.listen(PORT, () => {
@@ -155,7 +155,7 @@ app.listen(PORT, () => {
 ////////////////////////////////////////
 function loadArticles() {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // loadArticles is represented by steps 3 and 4 on the diagram. If there is no data in the table, it pulls it from JSON, assuming that there is a local copy of the database in .json. This is a read as far as CRUD is concerned.
 
   let SQL = 'SELECT COUNT(*) FROM articles';
   client.query(SQL)
@@ -180,7 +180,7 @@ function loadArticles() {
 
 function loadDB() {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This code corresponds to step 3 in the diagram. It builds a new table if need be and loads all of the articles in, as discussed in an above comment. This is a CREATE, for obvious reasons.
   client.query(`
     CREATE TABLE IF NOT EXISTS articles (
       article_id SERIAL PRIMARY KEY,
