@@ -15,6 +15,13 @@ This project pulls in articles from a SQL database and renders them onto a page 
 Uses HTML/CSS, JavaScript with jQuery, NPM (with Express, FS and PG), AJAX, and highlight.js.
 
 ## Change Log
+
+Author: Vince Masten <vmasten@me.com>
+
+Date:   Thu Aug 23 13:16:54 2018 -0700
+
+    working on the readme
+
 Author: Vince Masten <vmasten@me.com>
 
 Date:   Thu Aug 23 12:52:48 2018 -0700
@@ -34,5 +41,4 @@ Date:   Thu Aug 23 10:23:12 2018 -0700
     initial commit
 
 ## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
--->
+Katy and Koko were both very helpful. We also looked a little at the SQL docs and at the cheat sheat provided with the lab.
