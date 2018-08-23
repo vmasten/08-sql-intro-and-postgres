@@ -8,7 +8,7 @@ const app = express();
 
 // Windows and Linux users: You should have retained the user/password from the pre-work for this course.
 // Your OS may require that your conString is composed of additional information including user and password.
-// const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
+const conString = 'postgres://USER:PASSWORD@HOST:PORT/DBNAME';
 
 // Mac:
 // const conString = 'postgres://localhost:5432';
@@ -28,7 +28,7 @@ app.use(express.static('./public'));
 // REVIEW: Routes for requesting HTML resources
 app.get('/new-article', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js, if any, is interacting with this particular piece of `server.js`? What part of CRUD, if any, is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This line of code corresponds to the 5th step in the picture. When new.html is sent, it runs the aticleView.initNewArticlePage method, which in turn runs the articleView.submit method, which finally runs the method article.insertRecord from the article.js page. Because we are adding to the page rather than creating it initially it counts as an update.
   response.sendFile('new.html', { root: './public' });
 });
 
@@ -36,7 +36,7 @@ app.get('/new-article', (request, response) => {
 // REVIEW: Routes for making API calls to use CRUD Operations on our database
 app.get('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. This piece of code is getting and displaying information from the client.query method, so it counts as read.
   client.query('')
     .then(function(result) {
       response.send(result.rows);
@@ -49,7 +49,7 @@ app.get('/articles', (request, response) => {
 
 app.post('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. The SQL variable is updating, by using INSERT INTO.
   let SQL = `
     INSERT INTO articles(title, author, author_url, category, published_on, body)
     VALUES ($1, $2, $3, $4, $5, $6);
@@ -76,7 +76,7 @@ app.post('/articles', (request, response) => {
 
 app.put('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. Because this is instatiating a new article among many, it counts as an update.
 
   let SQL = '';
   let values = [];
@@ -93,7 +93,7 @@ app.put('/articles/:id', (request, response) => {
 
 app.delete('/articles/:id', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code. Because we are using DELETE it counts as a delete.
 
   let SQL = `DELETE FROM articles WHERE article_id=$1;`;
   let values = [request.params.id];
@@ -110,7 +110,7 @@ app.delete('/articles/:id', (request, response) => {
 
 app.delete('/articles', (request, response) => {
   // COMMENT: What number(s) of the full-stack-diagram.png image correspond to the following line of code? Which method of article.js is interacting with this particular piece of `server.js`? What part of CRUD is being enacted/managed by this particular piece of code?
-  // PUT YOUR RESPONSE HERE
+  // This line of code corresponds to the 3rd, 4th, and 5th steps in the picture. No method from article.js is interacting with this piece of code.
 
   let SQL = '';
   client.query(SQL)
