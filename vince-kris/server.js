@@ -89,14 +89,15 @@ app.put('/articles/:id', (request, response) => {
             category = $4, 
             published_on = $5, 
             body = $6
-            WHERE article_id=${request.params.id}`;
+            WHERE article_id= $7`;
   let values = [
     request.body.title,
     request.body.author,
     request.body.author_url,
     request.body.category,
     request.body.published_on,
-    request.body.body
+    request.body.body,
+    request.params.id
   ];
   console.log(values);
 
